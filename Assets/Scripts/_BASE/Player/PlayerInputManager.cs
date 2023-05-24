@@ -25,6 +25,10 @@ namespace Deceilio.TPC_Movement
         [Header("PLAYER ACTION INPUT")]
         [SerializeField] bool dodgeInput = false; //Check if the Input for the dodge/roll is pressed or not
         [SerializeField] bool sprintInput = false; //Check if the Input for the sprint is pressed or not
+        private void Awake()
+        {
+            player = GetComponent<PlayerManager>();
+        }
 
         //BELOW CODE: READ THE VALUES OF JOYSTICK/KEYBOARD
         private void OnEnable()

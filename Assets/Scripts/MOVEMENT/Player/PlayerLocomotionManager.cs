@@ -7,7 +7,6 @@ namespace Deceilio.TPC_Movement
     public class PlayerLocomotionManager : CharacterLocomotionManager
     {
         PlayerManager player; //Reference to the Player Manager Script
-        public PlayerInputManager playerInputManager; //Reference to the Player Input Manager Script
 
         [HideInInspector] public float verticalMovement; //Value of the Vertical Movement
         [HideInInspector] public float horizontalMovement; //Value of the Horizontal Movement
@@ -46,9 +45,9 @@ namespace Deceilio.TPC_Movement
         }
         private void GetMovementValues()
         {
-            verticalMovement = playerInputManager.verticalInput;
-            horizontalMovement = playerInputManager.horizontalInput;
-            moveAmount = playerInputManager.moveAmount;
+            verticalMovement = player.playerInputManager.verticalInput;
+            horizontalMovement = player.playerInputManager.horizontalInput;
+            moveAmount = player.playerInputManager.moveAmount;
 
             //BELOW CODE: CLAMPS THE MOVEMENT
         }
@@ -70,12 +69,12 @@ namespace Deceilio.TPC_Movement
             }
             else 
             {
-                if (playerInputManager.moveAmount > 0.5f)
+                if (player.playerInputManager.moveAmount > 0.5f)
                 {
                     //BELOW CODE: MOVE AT A RUNNING SPEED
                     player.characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
                 }
-                else if (playerInputManager.moveAmount <= 0.5f)
+                else if (player.playerInputManager.moveAmount <= 0.5f)
                 {
                     //BELOW CODE: MOVE AT A WALKING SPEED
                     player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
@@ -108,10 +107,10 @@ namespace Deceilio.TPC_Movement
                 return; //HELP TO STOP SPAMMING THE ROLL BUTTON
 
             //BELOW CODE: IF WE ARE MOVING WHEN WE ATTEMPT TO DODGE, WE PERFORM A ROLL
-            if(playerInputManager.moveAmount > 0)
+            if(player.playerInputManager.moveAmount > 0)
             {
-                rollDirection = PlayerCameraManager.instance.cameraObject.transform.forward * playerInputManager.verticalInput;
-                rollDirection += PlayerCameraManager.instance.cameraObject.transform.right * playerInputManager.horizontalInput;
+                rollDirection = PlayerCameraManager.instance.cameraObject.transform.forward * player.playerInputManager.verticalInput;
+                rollDirection += PlayerCameraManager.instance.cameraObject.transform.right * player.playerInputManager.horizontalInput;
                 rollDirection.y = 0;
                 rollDirection.Normalize();
 

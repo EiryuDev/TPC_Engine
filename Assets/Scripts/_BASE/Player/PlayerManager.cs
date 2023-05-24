@@ -8,12 +8,14 @@ namespace Deceilio.TPC_Movement
     {
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager; //Reference to the Player Animator Manager Script
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager; //Reference to the Player Locomotion Manager Script
+        [HideInInspector] public PlayerInputManager playerInputManager; //Reference to the Player Input Manager Script
 
       [Header("FLAGS")]
         public bool isSprinting = false; //Checks if the player is sprinting or not  
         protected override void Awake()
         {
             base.Awake();
+            playerInputManager = GetComponent<PlayerInputManager>();    
             playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
             playerAnimatorManager = GetComponent<PlayerAnimatorManager>();  
         }

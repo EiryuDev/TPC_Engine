@@ -1275,6 +1275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4578475901498925114}
   - component: {fileID: 8209441172020562533}
+  - component: {fileID: 7922806628758078484}
   - component: {fileID: 4199345463009469545}
   - component: {fileID: 3441940600530373562}
   - component: {fileID: 4188627340137133801}
@@ -1295,7 +1296,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4578475901498925115}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: -0.53006315, y: 0, z: 1.0374818}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1324,6 +1325,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &7922806628758078484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4578475901498925115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86a09e0aa85dd7744be9493133c300ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  cameraInput: {x: 0, y: 0}
+  cameraVerticalInput: 0
+  cameraHorizontalInput: 0
+  movementInput: {x: 0, y: 0}
+  verticalInput: 0
+  horizontalInput: 0
+  moveAmount: 0
+  dodgeInput: 0
+  sprintInput: 0
 --- !u!114 &4199345463009469545
 MonoBehaviour:
   m_ObjectHideFlags: 0

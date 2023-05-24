@@ -5,7 +5,6 @@ namespace Deceilio.TPC_Movement
     public class PlayerCameraManager : MonoBehaviour
     {
         public static PlayerCameraManager instance; //Static Instance for the Player Camera Manager Script
-        public PlayerInputManager playerInputManager; //Reference to the Player Input Manager Script
         public PlayerManager player; //Reference to the Player Manager Script
         public Camera cameraObject; //Reference to the Camera Object Component
         [SerializeField] Transform cameraPivotTransform; //Reference to Transform Component for Camera Pivot
@@ -70,9 +69,9 @@ namespace Deceilio.TPC_Movement
 
             //BELOW CODE: NORMAL ROTATION
             //BELOW CODE: ROTATE LEFT AND RIGHT BASED ON HORIZONTAL MOVEMENT ON THE RIGHT JOYSTICK // MOUSE
-            leftAndRightLookAngle += (playerInputManager.cameraHorizontalInput * leftAndRightRotationSpeed) * Time.deltaTime;
+            leftAndRightLookAngle += (player.playerInputManager.cameraHorizontalInput * leftAndRightRotationSpeed) * Time.deltaTime;
             //BELOW CODE: ROTATE UP AND DOWN BASED ON HORIZONTAL MOVEMENT ON THE RIGHT JOYSTICK // MOUSE
-            upAndDownLookAngle -= (playerInputManager.cameraVerticalInput * upAndDownRotationSpeed) * Time.deltaTime;
+            upAndDownLookAngle -= (player.playerInputManager.cameraVerticalInput * upAndDownRotationSpeed) * Time.deltaTime;
             //BELOW CODE: CLAMP THE UP AND DOWN LOOK ANGLE BETWEEN A MIN AND MAX VALUE
             upAndDownLookAngle = Mathf.Clamp(upAndDownLookAngle, minimumPivot, maximumPivot);
 

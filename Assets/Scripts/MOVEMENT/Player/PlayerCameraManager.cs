@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Deceilio.TPC_Movement
+namespace Deceilio.TPC_Engine
 {
     public class PlayerCameraManager : MonoBehaviour
     {
@@ -37,7 +37,7 @@ namespace Deceilio.TPC_Movement
             }
         }
         private void Start()
-        {  
+        {
             defaultCameraZPosition = cameraObject.transform.localPosition.z;
         }
         public void UseAllCameraActions()
@@ -105,7 +105,7 @@ namespace Deceilio.TPC_Movement
                 targetCameraZPosition = -(distanceFromHitObject - cameraCollisionRadius);
             }
 
-            //BELOW CODE: IF PLAYER TARGET POSITION IS LESS THAN COLLISION RADIUS, SUBTRACT PLAYER'S COLLISION RADIUS (SNAP IT BACK) 
+            //BELOW CODE: IF PLAYER TARGET POSITION IS LESS THAN COLLISION RADIUS, SUBTRACT PLAYER'S COLLISION RADIUS (SNAP IT BACK)
             if (Mathf.Abs(targetCameraZPosition) < cameraCollisionRadius)
             {
                 targetCameraZPosition = -cameraCollisionRadius;

@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Deceilio.TPC_Movement
+namespace Deceilio.TPC_Engine
 {
     public class PlayerInputManager : MonoBehaviour
     {

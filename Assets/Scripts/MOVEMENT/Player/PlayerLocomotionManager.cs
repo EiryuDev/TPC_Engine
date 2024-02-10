@@ -103,6 +103,9 @@ namespace Deceilio.TPC_Engine
         }
         public void AttemptToPerformDodge()
         {
+            if (!player.canRoll)
+                return;
+
             if (player.isPerformingAction)
                 return; //HELP TO STOP SPAMMING THE ROLL BUTTON
 

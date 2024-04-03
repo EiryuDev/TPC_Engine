@@ -19,7 +19,6 @@ namespace Deceilio.TPC_Engine
         [SerializeField] float rotationSpeed = 15; // Value for the rotation speed of the player
 
         [Header("JUMP")]
-        [SerializeField] private float jumpStaminaCost = 5; // Stamina cost value for reduction of stamina after jumping 
         [SerializeField] float jumpHeight = 4; // Jump height value for the player
         [SerializeField] float jumpForwardSpeed = 5; // Forward jump speed for the player
         [SerializeField] float freeFallSpeed = 2; // Free fall speed for the player

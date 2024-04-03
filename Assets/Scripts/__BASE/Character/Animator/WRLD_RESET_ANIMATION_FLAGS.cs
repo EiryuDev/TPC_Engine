@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Deceilio.TPC_Engine
 {
-    public class ResetAnimationFlags : StateMachineBehaviour
+    public class WRLD_RESET_ANIMATION_FLAGS : StateMachineBehaviour
     {
         CharacterManager character; // Reference to the Character Manager script
 
@@ -17,8 +17,9 @@ namespace Deceilio.TPC_Engine
             // BELOW CODE: This is called when actions ends, and the states return to "Empty"
             character.isPerformingAction = false;
             character.applyRootMotion = false;
-            character.canRotate = true;
-            character.canMove = true;
+            character.characterLocomotionManager.canRotate = true;
+            character.characterLocomotionManager.canMove = true;
+            character.characterLocomotionManager.isJumping = false;
         }
     }
 }

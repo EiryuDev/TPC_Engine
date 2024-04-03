@@ -46,9 +46,9 @@ namespace Deceilio.TPC_Engine
             // BELOW CODE: Player rotation [aerial movement]
             UseRotation();
             // TO-DO: Jumping movement [aerial movement]
-            //UseJumpingMovement();
+            UseJumpingMovement();
             // TO-DO: Player falling [aerial movement]
-            //UseFreeFallMovement();
+            UseFreeFallMovement();
         }
         private void GetMovementValues()
         {
@@ -60,7 +60,7 @@ namespace Deceilio.TPC_Engine
         }
         private void UseGroundedMovement()
         {
-            if (!player.canMove)
+            if (!canMove)
                 return;
 
             GetMovementValues();
@@ -88,9 +88,28 @@ namespace Deceilio.TPC_Engine
                 }
             }
         }
+        private void UseJumpingMovement()
+        {
+            if (isJumping)
+            {
+                player.characterController.Move(jumpDirection * jumpForwardSpeed * Time.deltaTime);
+            }
+        }
+        private void UseFreeFallMovement()
+        {
+            if (!isGrounded)
+            {
+                Vector3 freeFallDirection;
+                freeFallDirection = PlayerCameraManager.instance.transform.forward * player.playerInputManager.verticalInput;
+                freeFallDirection = freeFallDirection + PlayerCameraManager.instance.transform.right * player.playerInputManager.horizontalInput;
+                freeFallDirection.y = 0;
+
+                player.characterController.Move(freeFallDirection * freeFallSpeed * Time.deltaTime);
+            }
+        }
         private void UseRotation()
         {
-            if (!player.canRotate)
+            if (!canRotate)
                 return;
 
             targetRotationDirection = Vector3.zero;
@@ -110,7 +129,7 @@ namespace Deceilio.TPC_Engine
         }
         public void AttemptToPerformDodge()
         {
-            if (!player.canRoll)
+            if (!canDodge)
                 return;
 
             if (player.isPerformingAction)
@@ -136,6 +155,56 @@ namespace Deceilio.TPC_Engine
                 // BELOW CODE: Use a backstep animation
                 player.playerAnimatorManager.PlayTargetActionAnimation("Back_Step_01", true, true);
             }
+        }
+        public void AttemptToPerformJump()
+        {
+            if (!canJump)
+                return;
+
+            // BELOW CODE: If performing an action, we don't want player to jump (need to change when adding combat)
+            if (player.isPerformingAction)
+                return; // Help to stop spamming the roll button
+
+            // BELOW CODE: If we already jumping, we don't want to allow tp jump again until it finishes
+            if (isJumping)
+                return;
+
+            // BELOW CODE: If we are not grounded, we don't want player to jumps
+            if (!isGrounded)
+                return;
+
+            // BELOW CODE: If 2 handing weapon, play the 2 hand animations, otherwise play the one handed animation
+            player.playerAnimatorManager.PlayTargetActionAnimation("Main_Jump_Start_01", false);
+            isJumping = true;
+
+            jumpDirection = PlayerCameraManager.instance.cameraObject.transform.forward * player.playerInputManager.verticalInput;
+            jumpDirection += PlayerCameraManager.instance.cameraObject.transform.right * player.playerInputManager.horizontalInput;
+            jumpDirection.y = 0;
+
+            if (jumpDirection != Vector3.zero)
+            {
+                // BELOW CODE: If player is sprinting, jump direction is at full distance
+                if (player.isSprinting)
+                {
+                    jumpDirection *= 1;
+                }
+                // BELOW CODE: If player is running, jump direction is at half distance
+                else if (player.playerInputManager.moveAmount > 0.5)
+                {
+                    jumpDirection *= 0.5f;
+                }
+                // BELOW CODE: If player is walking, jump direction is at quarter distance
+                else if (player.playerInputManager.moveAmount <= 0.5)
+                {
+                    jumpDirection *= 0.25f;
+                }
+            }
+
+        }
+        public void ApplyJumpVelocity()
+        {
+            // BELOW CODE: Apply an upward velocity
+            yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
         }
         public void UseSprinting()
         {

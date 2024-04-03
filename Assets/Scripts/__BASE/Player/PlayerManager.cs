@@ -10,7 +10,6 @@ namespace Deceilio.TPC_Engine
 
         [Header("FLAGS")]
         public bool isSprinting = false; // Checks if the player is sprinting or not  
-        public bool canRoll = true; // Checks if player can roll or not
         protected override void Awake()
         {
             base.Awake();

@@ -74,7 +74,8 @@ namespace Deceilio.TPC_Engine
             UsePlayerMovementInput();
             UseCameraMovementInput();
             UseDodgeInput();
-            UseSprinting();
+            UseJumpInput();
+            UseSprintInput();
         }
 
         // BELOW CODE: Move the character based on the values // player movement
@@ -133,10 +134,10 @@ namespace Deceilio.TPC_Engine
 
                 // BELOW CODE: If as UI window opened, simply return wihout doing anything
                 // BELOW CODE: Attempt to perform jump
-                player.playerLocomotionManager.AttemptToPerformDodge();
+                player.playerLocomotionManager.AttemptToPerformJump();
             }
         }
-        private void UseSprinting()
+        private void UseSprintInput()
         {
             if(sprintInput)
             {

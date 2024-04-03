@@ -97,8 +97,8 @@ namespace Deceilio.TPC_Engine
             // BELOW CODE: The below flag will turn true if player is stunned
             // BELOW CODE: We can then check for this flag before attempting new actions
             character.isPerformingAction = isPerformingAction;
-            character.canRotate = canRotate;
-            character.canMove = canMove;
+            character.characterLocomotionManager.canRotate = canRotate;
+            character.characterLocomotionManager.canMove = canMove;
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Deceilio.TPC_Engine
 
         [Header("FLAGS")]
         public bool isGrounded = true; // Checks if the player is grounded or not
+        public bool isSprinting = false; // Checks if the player is sprinting or not  
         public bool isJumping = false; // Checks if the player is jumping or not
         public bool canRotate = true; // Checks if the player can rotate or not
         public bool canMove = true; // Checks if the player can move or not

@@ -8,8 +8,6 @@ namespace Deceilio.TPC_Engine
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager; // Reference to the Player Locomotion Manager script
         [HideInInspector] public PlayerInputManager playerInputManager; // Reference to the Player Input Manager script
 
-        [Header("FLAGS")]
-        public bool isSprinting = false; // Checks if the player is sprinting or not  
         protected override void Awake()
         {
             base.Awake();

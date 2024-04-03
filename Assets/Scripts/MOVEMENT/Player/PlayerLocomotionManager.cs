@@ -36,7 +36,7 @@ namespace Deceilio.TPC_Engine
         protected override void Update()
         {
             base.Update();
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.isSprinting);
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, isSprinting);
 
         }
         public void UseAllMovement()
@@ -70,7 +70,7 @@ namespace Deceilio.TPC_Engine
             moveDirection.Normalize();
             moveDirection.y = 0;
 
-            if(player.isSprinting)
+            if(isSprinting)
             {
                 player.characterController.Move(moveDirection * sprintingSpeed * Time.deltaTime);
             }
@@ -184,7 +184,7 @@ namespace Deceilio.TPC_Engine
             if (jumpDirection != Vector3.zero)
             {
                 // BELOW CODE: If player is sprinting, jump direction is at full distance
-                if (player.isSprinting)
+                if (isSprinting)
                 {
                     jumpDirection *= 1;
                 }
@@ -211,7 +211,7 @@ namespace Deceilio.TPC_Engine
             if(player.isPerformingAction)
             {
                 // BELOW CODE: Stop Sprinting
-                player.isSprinting = false;
+                isSprinting = false;
             }
 
             // TO-DO: If we are out of stamina, set sprinting to false
@@ -219,12 +219,12 @@ namespace Deceilio.TPC_Engine
             // BELOW CODE: Player moving then set sprinting to true  
             if (moveAmount >= 0.5)
             {
-                player.isSprinting = true;
+                isSprinting = true;
             }
             // BELOW CODE: Player stationary/moving slowly then set sprinting to false  
             else
             {
-                player.isSprinting = false;
+                isSprinting = false;
             }     
         }
     }

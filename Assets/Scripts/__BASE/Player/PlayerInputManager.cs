@@ -104,7 +104,7 @@ namespace Deceilio.TPC_Engine
                 return;
 
             // BELOW CODE: If we are not locked on, only use the default movement
-            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.isSprinting);
+            player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerLocomotionManager.isSprinting);
 
             // TO-DO: If we are locked on, pass the additional movement as well
         }
@@ -146,7 +146,7 @@ namespace Deceilio.TPC_Engine
             }
             else
             {
-                player.isSprinting = false;
+                player.playerLocomotionManager.isSprinting = false;
             }
         }
     }

@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Deceilio.TPC_Engine
 {
     public class PlayerUIManager : MonoBehaviour
     {
-        public static PlayerUIManager instance; //Static Object for the Script
+        public static PlayerUIManager instance; // Static object for the script
 
         private void Awake()
         {
-            //BELOW CODE: THERE CAN ONLY BE ONE INSTANCE OF THIS SCRIPT, IF NOT AND MORE THEN DESTORY THE GAMEOBJECT
+            // BELOW CODE: There can only be one instance of this script, if not and more then destory the gameobject
             if (instance == null)
             {
                 instance = this;

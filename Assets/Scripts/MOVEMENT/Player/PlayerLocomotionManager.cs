@@ -1,27 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Deceilio.TPC_Engine
 {
     public class PlayerLocomotionManager : CharacterLocomotionManager
     {
-        PlayerManager player; //Reference to the Player Manager Script
+        PlayerManager player; // Reference to the Player Manager script
 
-        [HideInInspector] public float verticalMovement; //Value of the Vertical Movement
-        [HideInInspector] public float horizontalMovement; //Value of the Horizontal Movement
-        [HideInInspector] public float moveAmount; //Value for the movement amount
+        [HideInInspector] public float verticalMovement; // Value of the vertical movement
+        [HideInInspector] public float horizontalMovement; // Value of the horizontal movement
+        [HideInInspector] public float moveAmount; // Value for the movement amount
 
         [Header("MOVEMENT SETTINGS")]
-        private Vector3 moveDirection; //Directional Movement value of the Player
-        private Vector3 targetRotationDirection; //Target Direction value of the player
-        [SerializeField] float walkingSpeed = 2; //Value for the Walking Speed of the Player
-        [SerializeField] float runningSpeed = 5; //Value for the Walking Speed of the Player
-        [SerializeField] float sprintingSpeed = 6.5f; //Value for the Sprinting Speed of the Player
-        [SerializeField] float rotationSpeed = 15; //Value for the Rotation Speed of the Player
+        private Vector3 moveDirection; // Directional movement value of the player
+        private Vector3 targetRotationDirection; // Target direction value of the player
+        [SerializeField] float walkingSpeed = 2; // Value for the walking speed of the player
+        [SerializeField] float runningSpeed = 5; // Value for the walking speed of the player
+        [SerializeField] float sprintingSpeed = 6.5f; // Value for the sprinting speed of the player
+        [SerializeField] float rotationSpeed = 15; // Value for the rotation speed of the player
+
+        [Header("JUMP")]
+        [SerializeField] private float jumpStaminaCost = 5; // Stamina cost value for reduction of stamina after jumping 
+        [SerializeField] float jumpHeight = 4; // Jump height value for the player
+        [SerializeField] float jumpForwardSpeed = 5; // Forward jump speed for the player
+        [SerializeField] float freeFallSpeed = 2; // Free fall speed for the player
+        private Vector3 jumpDirection; // Direction value where you will jump the player
 
         [Header("DODGE SETTINGS")]
-        private Vector3 rollDirection; //Direction Value where you will roll the player
+        private Vector3 rollDirection; // Direction value where you will roll the player
         protected override void Awake()
         {
             base.Awake();
@@ -36,12 +41,14 @@ namespace Deceilio.TPC_Engine
         }
         public void UseAllMovement()
         {
-            //BELOW CODE: GROUNDED MOVEMENT
+            // BELOW CODE: Grounded movement
             UseGroundedMovement();
-            //BELOW CODE: PLAYER ROTATION [AERIAL MOVEMENT]
+            // BELOW CODE: Player rotation [aerial movement]
             UseRotation();
-            //TO-DO: JUMPING MOVEMENT [AERIAL MOVEMENT]
-            //TO-DO: PLAYER FALLING [AERIAL MOVEMENT]
+            // TO-DO: Jumping movement [aerial movement]
+            //UseJumpingMovement();
+            // TO-DO: Player falling [aerial movement]
+            //UseFreeFallMovement();
         }
         private void GetMovementValues()
         {
@@ -49,7 +56,7 @@ namespace Deceilio.TPC_Engine
             horizontalMovement = player.playerInputManager.horizontalInput;
             moveAmount = player.playerInputManager.moveAmount;
 
-            //BELOW CODE: CLAMPS THE MOVEMENT
+            // BELOW CODE: Clamps the movement
         }
         private void UseGroundedMovement()
         {
@@ -57,7 +64,7 @@ namespace Deceilio.TPC_Engine
                 return;
 
             GetMovementValues();
-            //BELOW CODE: MOVE DIRECTION IS BASED ON CAMERA FACING PERSPECTIVE OR MOVEMENT INPUTS
+            // BELOW CODE: Move direction is based on camera facing perspective or movement inputs
             moveDirection = PlayerCameraManager.instance.transform.forward * verticalMovement;
             moveDirection = moveDirection + PlayerCameraManager.instance.transform.right * horizontalMovement;
             moveDirection.Normalize();
@@ -71,12 +78,12 @@ namespace Deceilio.TPC_Engine
             {
                 if (player.playerInputManager.moveAmount > 0.5f)
                 {
-                    //BELOW CODE: MOVE AT A RUNNING SPEED
+                    // BELOW CODE: Move at a running speed
                     player.characterController.Move(moveDirection * runningSpeed * Time.deltaTime);
                 }
                 else if (player.playerInputManager.moveAmount <= 0.5f)
                 {
-                    //BELOW CODE: MOVE AT A WALKING SPEED
+                    // BELOW CODE: Move at a walking speed
                     player.characterController.Move(moveDirection * walkingSpeed * Time.deltaTime);
                 }
             }
@@ -107,10 +114,10 @@ namespace Deceilio.TPC_Engine
                 return;
 
             if (player.isPerformingAction)
-                return; //HELP TO STOP SPAMMING THE ROLL BUTTON
+                return; // Help to stop spamming the roll button
 
-            //BELOW CODE: IF WE ARE MOVING WHEN WE ATTEMPT TO DODGE, WE PERFORM A ROLL
-            if(player.playerInputManager.moveAmount > 0)
+            // BELOW CODE: If we are moving when we attempt to dodge, we perform a roll
+            if (player.playerInputManager.moveAmount > 0)
             {
                 rollDirection = PlayerCameraManager.instance.cameraObject.transform.forward * player.playerInputManager.verticalInput;
                 rollDirection += PlayerCameraManager.instance.cameraObject.transform.right * player.playerInputManager.horizontalInput;
@@ -120,13 +127,13 @@ namespace Deceilio.TPC_Engine
                 Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
                 player.transform.rotation = playerRotation;
 
-                //BELOW CODE: USE A ROLL ANIMATION
+                // BELOW CODE: Use a roll animation
                 player.playerAnimatorManager.PlayTargetActionAnimation("Roll_Forward_01", true, true);
             }
-            //BELOW CODE: IF WE STATIONARY, WE PERFORM A BACKSTEP
+            // BELOW CODE: If we stationary, we perform a backstep
             else
             {
-                //BELOW CODE: USE A BACKSTEP ANIMATION
+                // BELOW CODE: Use a backstep animation
                 player.playerAnimatorManager.PlayTargetActionAnimation("Back_Step_01", true, true);
             }
         }
@@ -134,18 +141,18 @@ namespace Deceilio.TPC_Engine
         {
             if(player.isPerformingAction)
             {
-                //BELOW CODE: Stop Sprinting
+                // BELOW CODE: Stop Sprinting
                 player.isSprinting = false;
             }
 
-            //TO-DO: IF WE ARE OUT OF STAMINA, SET SPRINTING TO FALSE
+            // TO-DO: If we are out of stamina, set sprinting to false
 
-            //BELOW CODE: PLAYER MOVING THEN SET SPRINTING TO TRUE  
+            // BELOW CODE: Player moving then set sprinting to true  
             if (moveAmount >= 0.5)
             {
                 player.isSprinting = true;
             }
-            //BELOW CODE: PLAYER STATIONARY/MOVING SLOWLY THEN SET SPRINTING TO FALSE  
+            // BELOW CODE: Player stationary/moving slowly then set sprinting to false  
             else
             {
                 player.isSprinting = false;

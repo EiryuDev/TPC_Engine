@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Deceilio.TPC_Engine
 {
     public class CharacterAnimatorManager : MonoBehaviour
     {
-        CharacterManager character; //Reference to the Character Manager Script
+        CharacterManager character; // Reference to the Character Manager script
 
-        int horizontal; //For Horizontal Value
-        int vertical; //For Vertical Value
+        int horizontal; // For horizontal value
+        int vertical; // For vertical value
         protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
@@ -19,7 +17,7 @@ namespace Deceilio.TPC_Engine
         }
         public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting)
         {
-            //BELOW CODE: ADDING THE VALUES
+            // BELOW CODE: Adding the values
             float horizontalAmount = horizontalMovement;
             float verticalAmount = verticalMovement;  
 
@@ -30,12 +28,12 @@ namespace Deceilio.TPC_Engine
 
             character.animator.SetFloat(horizontal, horizontalAmount, 0.1f, Time.deltaTime);
             character.animator.SetFloat(vertical, verticalAmount, 0.1f, Time.deltaTime);
-            //BELOW CODE: ADDING THE VALUES (NEW METHOD)
+            // BELOW CODE: Adding the values (new method)
             //float snappedHorizontal = 0;
             //float snappedVertical = 0;
 
             #region Horizontal
-            //BELOW CODE: CHAIN AROUND THE HORIZONTAL MOVEMENT
+            //BELOW CODE: Chain around the horizontal movement
             //if (horizontalMovement > 0 && horizontalMovement <= 0.5f)
             //{
             //    snappedHorizontal = 0.5f;
@@ -59,7 +57,7 @@ namespace Deceilio.TPC_Engine
             #endregion
 
             #region Vertical
-            //BELOW CODE: CHAIN AROUND THE VERTICAL MOVEMENT
+            //BELOW CODE: Chain around the vertical movement
             //if (verticalMovement > 0 && verticalMovement <= 0.5f)
             //{
             //    snappedVertical = 0.5f;
@@ -94,14 +92,13 @@ namespace Deceilio.TPC_Engine
         {
             character.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(targetAnimation, 0.2f);
-            //BELOW CODE: CAN BE USED TO STOP CHARACTER FROM ATTEMPTING NEW ACTIONS
-            //BELOW CODE: EXAMPLE IF YOU GET DAMAGED AND BEGIN PERFORMING A DAMAGE ANIMATION
-            //BELOW CODE: THE BELOW FLAG WILL TURN TRUE IF PLAYER IS STUNNED
-            //BELOW CODE: WE CAN THEN CHECK FOR THIS FLAG BEFORE ATTEMPTING NEW ACTIONS
+            // BELOW CODE: Can be used to stop character from attempting new actions
+            // BELOW CODE: Example if you get damaged and begin performing a damage animation
+            // BELOW CODE: The below flag will turn true if player is stunned
+            // BELOW CODE: We can then check for this flag before attempting new actions
             character.isPerformingAction = isPerformingAction;
             character.canRotate = canRotate;
             character.canMove = canMove;
         }
     }
-
 }

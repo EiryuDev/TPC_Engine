@@ -5,9 +5,9 @@ using UnityEditor;
 //Allows us to seperate our gameObjects and not lose our minds.
 
 [InitializeOnLoad]
-public static class HierarchySectionHeader
+public static class WRLD_HIERARCHY_WINDOW_HEADER
 {
-    static HierarchySectionHeader()
+    static WRLD_HIERARCHY_WINDOW_HEADER()
     {
         EditorApplication.hierarchyWindowItemOnGUI += HierarchyWindowItemOnGUI;
     }

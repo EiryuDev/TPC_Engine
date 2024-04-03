@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Deceilio.TPC_Engine
 {
     public class CharacterSoundFXManager : MonoBehaviour
     {
-        private AudioSource audioSource; //Reference to the Audio Source Component
+        private AudioSource audioSource; // Reference to the Audio Source component
 
         protected virtual void Awake()
         {

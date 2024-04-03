@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Deceilio.TPC_Engine
@@ -16,7 +14,7 @@ namespace Deceilio.TPC_Engine
         {
             if(player.applyRootMotion)
             {
-                //BELOW CODE: TAKE THE ROTATION FROM THE PARTICULAR ANIMATION AND APPLY TO THE CHARACTER ROTATION
+                // BELOW CODE: Take the rotation from the particular animation and apply to the character rotation
                 Vector3 velocity = player.animator.deltaPosition;
                 player.characterController.Move(velocity);
                 player.transform.rotation *= player.animator.deltaRotation;

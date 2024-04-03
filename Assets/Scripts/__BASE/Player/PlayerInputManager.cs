@@ -1,36 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Deceilio.TPC_Engine
 {
     public class PlayerInputManager : MonoBehaviour
     {
-        public PlayerManager player; //Reference to the Player Manager Script
-        PlayerControls playerControls; //Reference to the Player Controls Actions File for ref player Input
+        public PlayerManager player; // Reference to the Player Manager script
+        PlayerControls playerControls; // Reference to the player controls actions file for ref player input
 
         [Header("CAMERA INPUT")]
-        [SerializeField] Vector2 cameraInput; //Storing the Data for referencing for the Input Values for Camera
-        public float cameraVerticalInput; //Vertical Input value for the camera
-        public float cameraHorizontalInput; //Horizontal Input value for the camera
+        [SerializeField] Vector2 cameraInput; // Storing the data for referencing for the input values for camera
+        public float cameraVerticalInput; // Vertical input value for the camera
+        public float cameraHorizontalInput; // Horizontal input value for the camera
 
         [Header("PLAYER MOVEMENT INPUT")]
-        [SerializeField] Vector2 movementInput; //Storing the Data for referencing for the Input Values for movement
-        public float verticalInput; //Vertical Input value for the movement
-        public float horizontalInput; //Horizontal Input value for the movement
-        public float moveAmount; //Move Amount value for the player
+        [SerializeField] Vector2 movementInput; // Storing the data for referencing for the input values for movement
+        public float verticalInput; // Vertical input value for the movement
+        public float horizontalInput; // Horizontal input value for the movement
+        public float moveAmount; // Move amount value for the player
 
         [Header("PLAYER ACTION INPUT")]
-        [SerializeField] bool dodgeInput = false; //Check if the Input for the dodge/roll is pressed or not
-        [SerializeField] bool sprintInput = false; //Check if the Input for the sprint is pressed or not
+        [SerializeField] bool dodgeInput = false; // Check if the input for the dodge/roll is pressed or not
+        [SerializeField] bool sprintInput = false; // Check if the input for the sprint is pressed or not
+        [SerializeField] bool jumpInput = false; // Check if the input for the jump is pressed or not
         private void Awake()
         {
             player = GetComponent<PlayerManager>();
         }
 
-        //BELOW CODE: READ THE VALUES OF JOYSTICK/KEYBOARD
+        // BELOW CODE: Read the values of Joystick/Keyboard
         private void OnEnable()
         {
             if(playerControls == null)
@@ -39,18 +36,21 @@ namespace Deceilio.TPC_Engine
 
                 playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
                 playerControls.PlayerCamera.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
-                playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
 
-                //BELOW CODE: HOLDING THE SPRINT INPUT, MAKE BOOL TRUE
+                // Actions
+                playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
+                playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
+
+                // BELOW CODE: Holding the sprint input, make bool true
                 playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
-                //BELOW CODE: RELEASING THE SPRINT INPUT, MAKE BOOL FALSE
+                // BELOW CODE: Releasing the sprint input, make bool false
                 playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
             }
 
             playerControls.Enable();
         }
 
-        //BELOW CODE: IF PLAYER MINIMIZE OR LOWER THE WINDOW, STOP ADJUSTING INPUTS
+        // BELOW CODE: If player minimize or lower the window, stop adjusting inputs
         private void OnApplicationFocus(bool focus)
         {
             if(enabled)
@@ -77,17 +77,17 @@ namespace Deceilio.TPC_Engine
             UseSprinting();
         }
 
-        //BELOW CODE: MOVE THE CHARACTER BASED ON THE VALUES // PLAYER MOVEMENT
+        // BELOW CODE: Move the character based on the values // player movement
         private void UsePlayerMovementInput()
         {
             verticalInput = movementInput.y;
             horizontalInput = movementInput.x;
 
-            //BELOW CODE: RETURNS THE ABSOLUTE NUMBER (WITHOUT NEGATIVE NUMBERS, SO THE VALUE IS ALWAYS POSITIIVE)
+            // BELOW CODE: Returns the absolute number (without negative numbers, so the value is always positive)
             moveAmount = Mathf.Clamp01(Mathf.Abs(verticalInput) + Mathf.Abs(horizontalInput));
 
-            //BELOW CODE: CLAMPING THE VALUES SO IT WILL BE ALWAYS 0, 0.5 & 1
-            if(moveAmount <= 0.5 && moveAmount > 0)
+            // BELOW CODE: Clamping the values so it will be always 0, 0.5 & 1
+            if (moveAmount <= 0.5 && moveAmount > 0)
             {
                 moveAmount = 0.5f;
             }
@@ -96,16 +96,16 @@ namespace Deceilio.TPC_Engine
                 moveAmount = 1;
             }
 
-            //BELOW CODE: WE PASS 0 TO HORIZONTAL BECAUSE WE ONLY WANT NON-STRAFING MOVEMENT
-            //LOGIC: WE USE THE HORIZONTAL WHEN WE STRAFING OR LOCKED ON
+            // BELOW CODE: We pass 0 to horizontal because we only want non-strafing movement
+            // LOGIC: We use the horizontal when we strafing or locked on
 
             if (player == null)
                 return;
 
-            //BELOW CODE: IF WE ARE NOT LOCKED ON, ONLY USE THE DEFAULT MOVEMENT
+            // BELOW CODE: If we are not locked on, only use the default movement
             player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.isSprinting);
 
-            //TO-DO: IF WE ARE LOCKED ON, PASS THE ADDITIONAL MOVEMENT AS WELL
+            // TO-DO: If we are locked on, pass the additional movement as well
         }
         private void UseCameraMovementInput()
         {
@@ -113,23 +113,34 @@ namespace Deceilio.TPC_Engine
             cameraHorizontalInput = cameraInput.x;
         }
 
-        //BELOW CODE: PLAYER ACTIONS
+        // BELOW CODE: Player actions
         private void UseDodgeInput()
         {
             if(dodgeInput)
             {
                 dodgeInput = false;
 
-                //TO-DO: DO NOTHING IF MENU OR UI WINDOW IS OPEN
-                //BELOW CODE: PERFORM A DODGE
+                // TO-DO: Do nothing if menu or ui window is open
+                // BELOW CODE: Perform a dodge
                 player.playerLocomotionManager.AttemptToPerformDodge();
             }
-        }    
+        }
+        private void UseJumpInput()
+        {
+            if (jumpInput)
+            {
+                jumpInput = false;
+
+                // BELOW CODE: If as UI window opened, simply return wihout doing anything
+                // BELOW CODE: Attempt to perform jump
+                player.playerLocomotionManager.AttemptToPerformDodge();
+            }
+        }
         private void UseSprinting()
         {
             if(sprintInput)
             {
-                //BELOW CODE: Player started Sprinting
+                // BELOW CODE: Player started sprinting
                 player.playerLocomotionManager.UseSprinting();
             }
             else

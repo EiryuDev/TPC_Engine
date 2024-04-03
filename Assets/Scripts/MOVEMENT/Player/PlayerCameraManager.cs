@@ -4,27 +4,28 @@ namespace Deceilio.TPC_Engine
 {
     public class PlayerCameraManager : MonoBehaviour
     {
-        public static PlayerCameraManager instance; //Static Instance for the Player Camera Manager Script
-        public PlayerManager player; //Reference to the Player Manager Script
-        public Camera cameraObject; //Reference to the Camera Object Component
-        [SerializeField] Transform cameraPivotTransform; //Reference to Transform Component for Camera Pivot
+        public static PlayerCameraManager instance; // Static instance for the Player Camera Manager script
+        public PlayerManager player; // Reference to the Player Manager script
+        public Camera cameraObject; // Reference to the camera object component
+        [SerializeField] Transform cameraPivotTransform; // Reference to transform component for camera pivot
 
-        [Header("CAMERA SETTINGS")] //Change this to tweak camera performance
-        private float cameraSmoothSpeed = 1; //Camera Move Smooth Speed Value (The Bigger the number is the longer camera will reacts to the position change)
-        [SerializeField] float leftAndRightRotationSpeed = 220; //Speed for Left and Right camera rotation
-        [SerializeField] float upAndDownRotationSpeed = 220; //Speed for Up and Down camera rotation
-        [SerializeField] float minimumPivot = -30; //The Lowest Pivot value where you can look down
-        [SerializeField] float maximumPivot = 60; //The Highest Pivot value where you can look up
-        [SerializeField] float cameraCollisionRadius = 0.2f; //Camera Collision Radius Value
-        [SerializeField] LayerMask collideWithLayers; //LayerMask for the Camera
+        [Header("CAMERA SETTINGS")] // Change this to tweak camera performance
+        private float cameraSmoothSpeed = 1; // Camera move smooth speed value (the bigger the number is the longer camera will reacts to the position change)
+        [SerializeField] float leftAndRightRotationSpeed = 220; // Speed for left and right camera rotation
+        [SerializeField] float upAndDownRotationSpeed = 220; // Speed for up and down camera rotation
+        [SerializeField] float minimumPivot = -30; // The lowest pivot value where you can look down
+        [SerializeField] float maximumPivot = 60; // The highest pivot value where you can look up
+        [SerializeField] float cameraCollisionRadius = 0.2f; // Camera collision radius value
+        [SerializeField] LayerMask collideWithLayers; // Layermask for the camera
 
-        [Header("CAMERA VALUE")] //Display only the Camera Values
-        private Vector3 cameraVelocity; //Camera Velocity Value
-        private Vector3 cameraObjectPosition; //Position Vector for Camera Object (Moves the Camera Object to this position upon colliding)
-        [SerializeField] float leftAndRightLookAngle; //Angle value for looking left and right through camera
-        [SerializeField] float upAndDownLookAngle; //Angle value for looking up and down through camera
-        private float defaultCameraZPosition; //Default Camera Z Position Value of the Camera Collisions
-        private float targetCameraZPosition; //Target Camera Z Position Value of the Camera Collisions
+        [Header("CAMERA VALUE")] // Display only the camera values
+        private Vector3 cameraVelocity; // Camera velocity value
+        private Vector3 cameraObjectPosition; // Position vector for camera object (moves the camera object to this position upon colliding)
+        [SerializeField] float leftAndRightLookAngle; // Angle value for looking left and right through camera
+        [SerializeField] float upAndDownLookAngle; // Angle value for looking up and down through camera
+        private float defaultCameraZPosition; // Default camera z position value of the camera collisions
+        private float targetCameraZPosition; // Target camera z position value of the camera collisions
+
         private void Awake()
         {
             if(instance == null)
@@ -44,11 +45,11 @@ namespace Deceilio.TPC_Engine
         {
             if(player != null)
             {
-                //BELOW CODE: FOLLOW THE PLAYER
+                // BELOW CODE: Follow the player
                 UseFollowTarget();
-                //BELOW CODE: ROTATE AROUND THE PLAYER
+                // BELOW CODE: Rotate around the player
                 UseRotations();
-                //BELOW CODE: COLLIDE WITH OBJECTS
+                // BELOW CODE: Collide with objects
                 UseCollisions();
             }
         }
@@ -64,25 +65,25 @@ namespace Deceilio.TPC_Engine
         }
         private void UseRotations()
         {
-            //BELOW CODE: IF LOCKED ON, FORCE ROTATION TOWARDS TARGET
-            //BELOW CODE: ELSE ROTATE NORMALLY
+            // BELOW CODE: If locked on, force rotation towards target
+            // BELOW CODE: Else rotate normally
 
-            //BELOW CODE: NORMAL ROTATION
-            //BELOW CODE: ROTATE LEFT AND RIGHT BASED ON HORIZONTAL MOVEMENT ON THE RIGHT JOYSTICK // MOUSE
+            // BELOW CODE: Normal rotation
+            // BELOW CODE: Rotate left and right based on horizontal movement on the right joystick // mouse
             leftAndRightLookAngle += (player.playerInputManager.cameraHorizontalInput * leftAndRightRotationSpeed) * Time.deltaTime;
-            //BELOW CODE: ROTATE UP AND DOWN BASED ON HORIZONTAL MOVEMENT ON THE RIGHT JOYSTICK // MOUSE
+            // BELOW CODE: Rotate up and down based on horizontal movement on the right joystick // mouse
             upAndDownLookAngle -= (player.playerInputManager.cameraVerticalInput * upAndDownRotationSpeed) * Time.deltaTime;
-            //BELOW CODE: CLAMP THE UP AND DOWN LOOK ANGLE BETWEEN A MIN AND MAX VALUE
+            // BELOW CODE: Clamp the up and down look angle between a min and max value
             upAndDownLookAngle = Mathf.Clamp(upAndDownLookAngle, minimumPivot, maximumPivot);
 
             Vector3 cameraRotation = Vector3.zero;
             Quaternion targetRotation;
-            //BELOW CODE: ROTATE THE CAMERA LEFT AND RIGHT
+            // BELOW CODE: Rotate the camera left and right
             cameraRotation.y = leftAndRightLookAngle;
             targetRotation = Quaternion.Euler(cameraRotation);
             transform.rotation = targetRotation;
 
-            //BELOW CODE: ROTATE THE CAMERA UP AND DOWN
+            // BELOW CODE: Rotate the camera up and down
             cameraRotation = Vector3.zero;
             cameraRotation.x = upAndDownLookAngle;
             targetRotation = Quaternion.Euler(cameraRotation);
@@ -92,26 +93,26 @@ namespace Deceilio.TPC_Engine
         {
             targetCameraZPosition = defaultCameraZPosition;
             RaycastHit hit;
-            //BELOW CODE: DIRECTION FOR COLLISION CHECK
+            // BELOW CODE: Direction for collision check
             Vector3 direction = cameraObject.transform.position - cameraPivotTransform.position;
             direction.Normalize();
 
-            //BELOW CODE: CHECK IF THERE IS OBJECT IN FRONT OF CAMERA FROM OUR ABOVE DIRECTION
+            // BELOW CODE: Check if there is object in front of camera from our above direction
             if (Physics.SphereCast(cameraPivotTransform.position, cameraCollisionRadius, direction, out hit, Mathf.Abs(targetCameraZPosition), collideWithLayers))
             {
-                //BELOW CODE: IF THERE IS OBJECT, GET THE DISTANCE FROM THE PLAYER
+                // BELOW CODE: If there is object, get the distance from the player
                 float distanceFromHitObject = Vector3.Distance(cameraPivotTransform.position, hit.point);
-                //BELOW CODE: THEN EQUATE PLAYER'S TARGET Z POSITION TO THE FOLLOWING
+                // BELOW CODE: Then equate player's target z position to the following
                 targetCameraZPosition = -(distanceFromHitObject - cameraCollisionRadius);
             }
 
-            //BELOW CODE: IF PLAYER TARGET POSITION IS LESS THAN COLLISION RADIUS, SUBTRACT PLAYER'S COLLISION RADIUS (SNAP IT BACK)
+            // BELOW CODE: If player target position is less than collision radius, subtract player's collision radius (snap it back) 
             if (Mathf.Abs(targetCameraZPosition) < cameraCollisionRadius)
             {
                 targetCameraZPosition = -cameraCollisionRadius;
             }
 
-            //BELOW CODE: APPLY FINAL POSITION USING LERP
+            // BELOW CODE: Apply final position using lerps
             cameraObjectPosition.z = Mathf.Lerp(cameraObject.transform.localPosition.z, targetCameraZPosition, 0.2f);
             cameraObject.transform.localPosition = cameraObjectPosition;
         }

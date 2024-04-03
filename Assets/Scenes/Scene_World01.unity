@@ -19404,6 +19404,11 @@ PrefabInstance:
       propertyPath: playerInputManager
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4199345463009469545, guid: 9ec970688284801478d61bed8a6cab95,
+        type: 3}
+      propertyPath: canRoll
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4578475901498925114, guid: 9ec970688284801478d61bed8a6cab95,
         type: 3}
       propertyPath: m_RootOrder

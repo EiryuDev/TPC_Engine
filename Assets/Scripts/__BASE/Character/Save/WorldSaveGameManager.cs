@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,12 +6,12 @@ namespace Deceilio.TPC_Engine
 {
     public class WorldSaveGameManager : MonoBehaviour
     {
-        public static WorldSaveGameManager instance; //Static Object for the Script
-        [SerializeField] int worldSceneIndex = 1; //Choose which Index Scene to Load 
+        public static WorldSaveGameManager instance; // Static object for the script
+        [SerializeField] int worldSceneIndex = 1; // Choose which index scene to load 
         private void Awake()
         {
-            //BELOW CODE: THERE CAN ONLY BE ONE INSTANCE OF THIS SCRIPT, IF NOT AND MORE THEN DESTORY THE GAMEOBJECT
-            if(instance == null)
+            // BELOW CODE: There can only be one instance of this script, if not and more then destory the gameobject
+            if (instance == null)
             {
                 instance = this;
             }
@@ -23,7 +22,7 @@ namespace Deceilio.TPC_Engine
         }
         private void Start()
         {
-            DontDestroyOnLoad(gameObject); //Let you make the GameObject run one time for all the scene as "Don't Destory on Load"
+            DontDestroyOnLoad(gameObject); // Let you make the GameObject run one time for all the scene as "Don't Destory on Load"
         }
         public IEnumerator LoadNewGame()
         {

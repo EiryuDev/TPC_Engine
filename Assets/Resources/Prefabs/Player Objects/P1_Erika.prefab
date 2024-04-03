@@ -1362,18 +1362,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 0}
+  characterLocomotionManager: {fileID: 0}
   animator: {fileID: 8209441172020562533}
   applyRootMotion: 0
   isPerformingAction: 0
-  isGrounded: 1
-  isJumping: 0
-  canRotate: 1
-  canMove: 1
   playerAnimatorManager: {fileID: 0}
   playerLocomotionManager: {fileID: 0}
   playerInputManager: {fileID: 0}
-  isSprinting: 0
-  canRoll: 0
 --- !u!114 &3441940600530373562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1387,9 +1382,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrounded: 1
+  isSprinting: 0
+  isJumping: 0
   canRotate: 1
   canMove: 1
-  isRolling: 0
+  canDodge: 1
+  canJump: 1
   gravityForce: -40
   groundLayer:
     serializedVersion: 2
@@ -1406,8 +1404,8 @@ MonoBehaviour:
   sprintingSpeed: 7
   rotationSpeed: 15
   jumpStaminaCost: 5
-  jumpHeight: 4
-  jumpForwardSpeed: 5
+  jumpHeight: 7
+  jumpForwardSpeed: 8
   freeFallSpeed: 2
 --- !u!114 &4188627340137133801
 MonoBehaviour:

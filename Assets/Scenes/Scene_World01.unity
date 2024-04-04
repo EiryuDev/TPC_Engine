@@ -20285,7 +20285,7 @@ PrefabInstance:
     - target: {fileID: 4578475901498925115, guid: 9ec970688284801478d61bed8a6cab95,
         type: 3}
       propertyPath: m_Name
-      value: P1_Erika
+      value: P1_BigVegas
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

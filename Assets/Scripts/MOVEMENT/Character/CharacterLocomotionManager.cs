@@ -45,7 +45,7 @@ namespace Deceilio.TPC_Engine
             else
             {
                 // BELOW CODE: If character is not jumping, and character falling velocity has not been set
-                if (isJumping && !fallingVelocityHasBeenSet)
+                if (!isJumping && !fallingVelocityHasBeenSet)
                 {
                     fallingVelocityHasBeenSet = true;
                     yVelocity.y = fallStartYVelocity;

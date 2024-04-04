@@ -93,6 +93,26 @@ namespace Deceilio.TPC_Engine
                 }
             }
         }
+        private void UseRotation()
+        {
+            if (!canRotate)
+                return;
+
+            targetRotationDirection = Vector3.zero;
+            targetRotationDirection = PlayerCameraManager.instance.cameraObject.transform.forward * verticalMovement;
+            targetRotationDirection = targetRotationDirection + PlayerCameraManager.instance.cameraObject.transform.right * horizontalMovement;
+            targetRotationDirection.Normalize();
+            targetRotationDirection.y = 0;
+
+            if (targetRotationDirection == Vector3.zero)
+            {
+                targetRotationDirection = transform.forward;
+            }
+
+            Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
+            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = targetRotation;
+        }
         public void UseSprinting()
         {
             if (player.isPerformingAction)
@@ -121,13 +141,6 @@ namespace Deceilio.TPC_Engine
                 player.characterController.Move(jumpDirection * jumpForwardSpeed * Time.deltaTime);
             }
         }
-        private void UseSlidingMovement()
-        {
-            if (isSliding)
-            {
-                player.characterController.Move(slideDirection * slideForwardSpeed * Time.deltaTime);
-            }
-        }
         private void UseFreeFallMovement()
         {
             if (!isGrounded)
@@ -140,25 +153,12 @@ namespace Deceilio.TPC_Engine
                 player.characterController.Move(freeFallDirection * freeFallSpeed * Time.deltaTime);
             }
         }
-        private void UseRotation()
+        private void UseSlidingMovement()
         {
-            if (!canRotate)
-                return;
-
-            targetRotationDirection = Vector3.zero;
-            targetRotationDirection = PlayerCameraManager.instance.cameraObject.transform.forward * verticalMovement;
-            targetRotationDirection = targetRotationDirection + PlayerCameraManager.instance.cameraObject.transform.right * horizontalMovement;
-            targetRotationDirection.Normalize();
-            targetRotationDirection.y = 0;
-
-            if(targetRotationDirection == Vector3.zero)
+            if (isSliding)
             {
-                targetRotationDirection = transform.forward;
+                player.characterController.Move(slideDirection * slideForwardSpeed * Time.deltaTime);
             }
-
-            Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
-            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
-            transform.rotation = targetRotation;
         }
         public void AttemptToPerformDodge()
         {

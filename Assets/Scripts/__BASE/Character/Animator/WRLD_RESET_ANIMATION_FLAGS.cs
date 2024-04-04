@@ -20,6 +20,7 @@ namespace Deceilio.TPC_Engine
             character.characterLocomotionManager.canRotate = true;
             character.characterLocomotionManager.canMove = true;
             character.characterLocomotionManager.isJumping = false;
+            character.characterLocomotionManager.isSliding = false;
         }
     }
 }

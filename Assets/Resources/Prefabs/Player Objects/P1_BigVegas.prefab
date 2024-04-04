@@ -84,6 +84,7 @@ MonoBehaviour:
   dodgeInput: 0
   sprintInput: 0
   jumpInput: 0
+  slideInput: 0
 --- !u!114 &4199345463009469545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,13 +117,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cee63fb0e2a42e49950957a32249f9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGrounded: 1
-  isSprinting: 0
-  isJumping: 0
   canRotate: 1
   canMove: 1
   canDodge: 1
   canJump: 1
+  canSlide: 1
+  isGrounded: 1
+  isSprinting: 0
+  isJumping: 0
+  isSliding: 0
   gravityForce: -40
   groundLayer:
     serializedVersion: 2
@@ -141,6 +144,7 @@ MonoBehaviour:
   jumpHeight: 4
   jumpForwardSpeed: 5
   freeFallSpeed: 2
+  slideForwardSpeed: 10
 --- !u!114 &4188627340137133801
 MonoBehaviour:
   m_ObjectHideFlags: 0

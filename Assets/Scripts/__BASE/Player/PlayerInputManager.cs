@@ -22,6 +22,8 @@ namespace Deceilio.TPC_Engine
         [SerializeField] bool dodgeInput = false; // Check if the input for the dodge/roll is pressed or not
         [SerializeField] bool sprintInput = false; // Check if the input for the sprint is pressed or not
         [SerializeField] bool jumpInput = false; // Check if the input for the jump is pressed or not
+        [SerializeField] bool slideInput = false; // Check if the input for the slide is pressed or not
+
         private void Awake()
         {
             player = GetComponent<PlayerManager>();
@@ -40,6 +42,7 @@ namespace Deceilio.TPC_Engine
                 // Actions
                 playerControls.PlayerActions.Dodge.performed += i => dodgeInput = true;
                 playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
+                playerControls.PlayerActions.Slide.performed += i => slideInput = true;
 
                 // BELOW CODE: Holding the sprint input, make bool true
                 playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
@@ -75,6 +78,7 @@ namespace Deceilio.TPC_Engine
             UseCameraMovementInput();
             UseDodgeInput();
             UseJumpInput();
+            UseSlideInput();
             UseSprintInput();
         }
 
@@ -135,6 +139,17 @@ namespace Deceilio.TPC_Engine
                 // BELOW CODE: If as UI window opened, simply return wihout doing anything
                 // BELOW CODE: Attempt to perform jump
                 player.playerLocomotionManager.AttemptToPerformJump();
+            }
+        }
+        private void UseSlideInput()
+        {
+            if (slideInput)
+            {
+                slideInput = false;
+
+                // BELOW CODE: If as UI window opened, simply return wihout doing anything
+                // BELOW CODE: Attempt to perform slide
+                player.playerLocomotionManager.AttemptToPerformSlide();
             }
         }
         private void UseSprintInput()

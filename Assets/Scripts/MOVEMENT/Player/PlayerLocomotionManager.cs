@@ -24,6 +24,10 @@ namespace Deceilio.TPC_Engine
         [SerializeField] float freeFallSpeed = 2; // Free fall speed for the player
         private Vector3 jumpDirection; // Direction value where you will jump the player
 
+        [Header("SLIDE")]
+        [SerializeField] float slideForwardSpeed = 5; // Forward slide speed for the player
+        private Vector3 slideDirection; // Direction value where you will slide the player
+
         [Header("DODGE SETTINGS")]
         private Vector3 rollDirection; // Direction value where you will roll the player
         protected override void Awake()
@@ -44,10 +48,12 @@ namespace Deceilio.TPC_Engine
             UseGroundedMovement();
             // BELOW CODE: Player rotation [aerial movement]
             UseRotation();
-            // TO-DO: Jumping movement [aerial movement]
+            // BELOW CODE: Jumping movement [aerial movement]
             UseJumpingMovement();
-            // TO-DO: Player falling [aerial movement]
+            // BELOW CODE: Player falling [aerial movement]
             UseFreeFallMovement();
+            // BELOW CODE: Sliding movement [grounded movement]
+            UseSlidingMovement();
         }
         private void GetMovementValues()
         {
@@ -87,11 +93,39 @@ namespace Deceilio.TPC_Engine
                 }
             }
         }
+        public void UseSprinting()
+        {
+            if (player.isPerformingAction)
+            {
+                // BELOW CODE: Stop Sprinting
+                isSprinting = false;
+            }
+
+            // TO-DO: If we are out of stamina, set sprinting to false
+
+            // BELOW CODE: Player moving then set sprinting to true  
+            if (moveAmount >= 0.5)
+            {
+                isSprinting = true;
+            }
+            // BELOW CODE: Player stationary/moving slowly then set sprinting to false  
+            else
+            {
+                isSprinting = false;
+            }
+        }
         private void UseJumpingMovement()
         {
             if (isJumping)
             {
                 player.characterController.Move(jumpDirection * jumpForwardSpeed * Time.deltaTime);
+            }
+        }
+        private void UseSlidingMovement()
+        {
+            if (isSliding)
+            {
+                player.characterController.Move(slideDirection * slideForwardSpeed * Time.deltaTime);
             }
         }
         private void UseFreeFallMovement()
@@ -162,7 +196,7 @@ namespace Deceilio.TPC_Engine
 
             // BELOW CODE: If performing an action, we don't want player to jump (need to change when adding combat)
             if (player.isPerformingAction)
-                return; // Help to stop spamming the roll button
+                return; // Help to stop spamming the jump button
 
             // BELOW CODE: If we already jumping, we don't want to allow tp jump again until it finishes
             if (isJumping)
@@ -200,31 +234,55 @@ namespace Deceilio.TPC_Engine
             }
 
         }
+        public void AttemptToPerformSlide()
+        {
+            if (!canSlide)
+                return;
+
+            // BELOW CODE: If performing an action, we don't want player to slide (need to change when adding combat)
+            if (player.isPerformingAction)
+                return; // Help to stop spamming the slide button
+
+            // BELOW CODE: If we already sliding, we don't want to allow tp slide again until it finishes
+            if (isSliding)
+                return;
+
+            // BELOW CODE: If we are not grounded, we don't want player to slide
+            if (!isGrounded)
+                return;
+
+            // BELOW CODE: If 2 handing weapon, play the 2 hand animations, otherwise play the one handed animation
+            player.playerAnimatorManager.PlayTargetActionAnimation("Main_Slide_Start_01", false);
+            isSliding = true;
+
+            slideDirection = PlayerCameraManager.instance.cameraObject.transform.forward * player.playerInputManager.verticalInput;
+            slideDirection += PlayerCameraManager.instance.cameraObject.transform.right * player.playerInputManager.horizontalInput;
+            slideDirection.y = 0;
+
+            if (slideDirection != Vector3.zero)
+            {
+                // BELOW CODE: If player is sprinting, slide direction is at full distance
+                if (isSprinting)
+                {
+                    slideDirection *= 1;
+                }
+                // BELOW CODE: If player is running, slide direction is at half distance
+                else if (player.playerInputManager.moveAmount > 0.5)
+                {
+                    slideDirection *= 0.5f;
+                }
+                // BELOW CODE: If player is walking, slide direction is at quarter distance
+                else if (player.playerInputManager.moveAmount <= 0.5)
+                {
+                    slideDirection *= 0.25f;
+                }
+            }
+
+        }
         public void ApplyJumpVelocity()
         {
             // BELOW CODE: Apply an upward velocity
             yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
-        }
-        public void UseSprinting()
-        {
-            if(player.isPerformingAction)
-            {
-                // BELOW CODE: Stop Sprinting
-                isSprinting = false;
-            }
-
-            // TO-DO: If we are out of stamina, set sprinting to false
-
-            // BELOW CODE: Player moving then set sprinting to true  
-            if (moveAmount >= 0.5)
-            {
-                isSprinting = true;
-            }
-            // BELOW CODE: Player stationary/moving slowly then set sprinting to false  
-            else
-            {
-                isSprinting = false;
-            }     
         }
     }
 }

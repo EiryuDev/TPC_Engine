@@ -6,14 +6,20 @@ namespace Deceilio.TPC_Engine
     {
         CharacterManager character; // Reference to the Character Manager script
 
-        [Header("FLAGS")]
-        public bool isGrounded = true; // Checks if the player is grounded or not
-        public bool isSprinting = false; // Checks if the player is sprinting or not  
-        public bool isJumping = false; // Checks if the player is jumping or not
+        [Tooltip("Use to enable or disable particular movement action")]
+        [Header("TRIGGERS")]
         public bool canRotate = true; // Checks if the player can rotate or not
         public bool canMove = true; // Checks if the player can move or not
         public bool canDodge = true; // Checks if the player can jump or not
         public bool canJump = true; // Checks if the player can jump or not
+        public bool canSlide = true; // Checks if the player can slide or not
+
+        [Tooltip("Check if particular movement action is running or not")]
+        [Header("FLAGS")]
+        public bool isGrounded = true; // Checks if the player is grounded or not
+        public bool isSprinting = false; // Checks if the player is sprinting or not  
+        public bool isJumping = false; // Checks if the player is jumping or not
+        public bool isSliding = false; // Checks if the player is sliding or not
 
         [Header("GROUND CHECK & JUMPING")]
         [SerializeField] protected float gravityForce = -40; // Gravity force for the jumping

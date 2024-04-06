@@ -144,7 +144,7 @@ MonoBehaviour:
   jumpHeight: 4
   jumpForwardSpeed: 5
   freeFallSpeed: 2
-  slideForwardSpeed: 10
+  slideForwardSpeed: 15
 --- !u!114 &4188627340137133801
 MonoBehaviour:
   m_ObjectHideFlags: 0
